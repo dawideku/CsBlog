@@ -1,0 +1,19 @@
+﻿@model MyApp.Models.Post
+
+@{
+    ViewData["Title"] = "Usuń post";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <h3>Jesteś pewny, że chcesz usunąć ten post?</h3>
+    <h4>@Model.Tytul</h4>
+    <p>@Model.Tresc</p>
+</div>
+
+<form asp-action="UsunPost" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-danger">Usuń</button>
+    <a href="@Url.Action("Index", "Post")" class="btn btn-secondary">Anuluj</a>
+</form>

@@ -1,0 +1,14 @@
+﻿bin/
+obj/
+*.db
+*.log
+*.user
+*.suo
+.vscode/
+.env
+.vs/
+secrets.json
+appsettings.*.json
+node_modules/
+wwwroot/lib/
+*.swp

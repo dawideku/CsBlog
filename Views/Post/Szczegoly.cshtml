@@ -1,0 +1,14 @@
+﻿@model MyApp.Models.Post
+
+@{
+    ViewData["Title"] = "Szczegóły posta";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <h3>@Model.Tytul</h3>
+    <p>@Model.Tresc</p>
+</div>
+
+<a href="@Url.Action("Index", "Post")">Powrót do listy</a>

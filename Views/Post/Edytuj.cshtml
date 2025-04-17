@@ -1,0 +1,19 @@
+﻿@model MyApp.Models.Post
+
+@{
+    ViewData["Title"] = "Edytuj post";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edytuj" method="post">
+    <div class="form-group">
+        <label for="Tytul">Tytul</label>
+        <input type="text" class="form-control" id="Tytul" name="Tytul" value="@Model.Tytul" required />
+    </div>
+    <div class="form-group">
+        <label for="Tresc">Tresc</label>
+        <textarea class="form-control" id="Tresc" name="Tresc" required>@Model.Tresc</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+</form>

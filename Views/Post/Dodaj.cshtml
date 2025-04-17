@@ -1,0 +1,19 @@
+﻿@model MyApp.Models.Post
+
+@{
+    ViewData["Title"] = "Add Post";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Dodaj" method="post">
+    <div class="form-group">
+        <label for="Tytul">Tytul</label>
+        <input type="text" class="form-control" id="Tytul" name="Tytul" value="@Model.Tytul" required />
+    </div>
+    <div class="form-group">
+        <label for="Tresc">Tresc</label>
+        <textarea class="form-control" id="Tresc" name="Tresc" required>@Model.Tresc</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Post</button>
+</form>
