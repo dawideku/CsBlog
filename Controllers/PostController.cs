@@ -1,15 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 using MyApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MyApp.Controllers
 {
     public class PostController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _userManager;
 
-        public PostController(AppDbContext context)
+        public PostController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public IActionResult Dodaj()
@@ -19,20 +23,37 @@ namespace MyApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Dodaj(Post post)
+        public async Task<IActionResult> Dodaj(Post post)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Posts.Add(post);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return View(post);
             }
-            return View(post);
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return Forbid();
+            }
+
+            post.AppUserId = user.Id;
+            post.DataDodania = DateTime.Now;
+
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
+
+
 
         public IActionResult Szczegoly(int id)
         {
-            var post = _context.Posts.FirstOrDefault(p => p.Id == id);
+            var post = _context.Posts
+                .Include(p => p.AppUser)
+                .FirstOrDefault(p => p.Id == id);
+
 
             if (post == null)
             {
@@ -111,7 +132,10 @@ namespace MyApp.Controllers
 
         public IActionResult Index()
         {
-            var posts = _context.Posts.ToList();
+            var posts = _context.Posts
+                .Include(p => p.AppUser)
+                .ToList();
+
             return View(posts);
         }
     }
