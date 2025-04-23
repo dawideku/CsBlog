@@ -18,5 +18,6 @@ namespace MyApp.Models
 
         [ForeignKey("AppUserId")]
         public AppUser? AppUser { get; set; } // Nawigacja
+        public List<Komentarz> Komentarze { get; set; } = new();
     }
 }

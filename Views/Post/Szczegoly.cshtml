@@ -11,5 +11,38 @@
     <p><strong>Autor:</strong> @(Model.AppUser?.UserName ?? "Nieznany")</p>
     <p>@Model.Tresc</p>
 </div>
+<hr />
+<h4>Komentarze</h4>
 
+@if (Model.Komentarze.Any())
+{
+    foreach (var komentarz in Model.Komentarze.OrderByDescending(k => k.DataDodania))
+    {
+        <div style="margin-bottom: 10px;">
+            <strong>@(komentarz.AppUser?.UserName ?? "Nieznany użytkownik")</strong> napisał:
+            <p>@komentarz.Tresc</p>
+            <small>@komentarz.DataDodania.ToString("g")</small>
+        </div>
+    }
+}
+else
+{
+    <p>Brak komentarzy.</p>
+}
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form asp-action="DodajKomentarz" method="post">
+        <input type="hidden" name="postId" value="@Model.Id" />
+        <div class="form-group">
+            <label for="tresc">Dodaj komentarz:</label>
+            <textarea class="form-control" id="tresc" name="tresc" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Dodaj komentarz</button>
+    </form>
+}
+else
+{
+    <p><em>Tylko zalogowani użytkownicy mogą dodawać komentarze.</em></p>
+}
 <a href="@Url.Action("Index", "Post")">Powrót do listy</a>

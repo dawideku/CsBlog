@@ -220,6 +220,37 @@ namespace MyApp.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MyApp.Models.Komentarz", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DataDodania")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tresc")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Komentarze");
+                });
+
             modelBuilder.Entity("MyApp.Models.Post", b =>
                 {
                     b.Property<int>("Id")
@@ -300,6 +331,25 @@ namespace MyApp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MyApp.Models.Komentarz", b =>
+                {
+                    b.HasOne("MyApp.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyApp.Models.Post", "Post")
+                        .WithMany("Komentarze")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("MyApp.Models.Post", b =>
                 {
                     b.HasOne("MyApp.Models.AppUser", "AppUser")
@@ -307,6 +357,11 @@ namespace MyApp.Migrations
                         .HasForeignKey("AppUserId");
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("MyApp.Models.Post", b =>
+                {
+                    b.Navigation("Komentarze");
                 });
 #pragma warning restore 612, 618
         }

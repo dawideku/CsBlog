@@ -52,8 +52,9 @@ namespace MyApp.Controllers
 
         public IActionResult Szczegoly(int id)
         {
-            var post = _context.Posts
-                .Include(p => p.AppUser)
+            var post = _context.Posts.Include(p => p.AppUser)
+                .Include(p => p.Komentarze)
+                .ThenInclude(k => k.AppUser)
                 .FirstOrDefault(p => p.Id == id);
 
 
@@ -149,6 +150,38 @@ namespace MyApp.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DodajKomentarz(int postId, string tresc)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return Forbid();
+            }
+
+            if (string.IsNullOrWhiteSpace(tresc))
+            {
+                ModelState.AddModelError("Komentarz", "Komentarz nie może być pusty.");
+                return RedirectToAction("Szczegoly", new { id = postId });
+            }
+
+            var komentarz = new Komentarz
+            {
+                Tresc = tresc,
+                PostId = postId,
+                AppUserId = user.Id,
+                AppUser = user,
+                DataDodania = DateTime.Now
+            };
+
+            _context.Komentarze.Add(komentarz);
+            await _context.SaveChangesAsync();
+            Console.WriteLine($"Dodano komentarz od: {user.UserName}");
+            return RedirectToAction("Szczegoly", new { id = postId });
         }
 
 

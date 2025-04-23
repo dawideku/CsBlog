@@ -8,5 +8,6 @@ namespace MyApp.Models
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Komentarz> Komentarze { get; set; }
     }
 }
