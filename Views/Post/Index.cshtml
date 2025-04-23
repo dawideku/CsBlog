@@ -10,7 +10,10 @@
         <p><strong>Autor:</strong> @(post.AppUser?.UserName ?? "Nieznany")</p>
         <p>@post.Tresc.Substring(0, Math.Min(100, post.Tresc.Length))...</p>
         <p><a href="@Url.Action("Szczegoly", new { id = post.Id })">Czytaj dalej</a></p>
-        <p><a href="@Url.Action("Edytuj", "Post", new { id = post.Id })">Edytuj</a></p>
-        <p><a href="@Url.Action("Usun", "Post", new { id = post.Id })">Usuń</a></p>
+        @if (User.Identity.IsAuthenticated && User.Identity.Name == post.AppUser?.UserName)
+        {
+            <p><a href="@Url.Action("Edytuj", "Post", new { id = post.Id })">Edytuj</a></p>
+            <p><a href="@Url.Action("Usun", "Post", new { id = post.Id })">Usuń</a></p>
+        }
     </div>
 }
