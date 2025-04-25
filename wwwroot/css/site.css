@@ -1,31 +1,188 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #fb258c;
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #007bff; /* Zmiana na niebieski */
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+.form-container {
+    max-width: 400px; /* Szerokoœæ formularza */
+    margin: 0 auto; /* Wyœrodkowanie */
+    padding: 20px; /* Wewnêtrzny padding */
+    background-color: #ffffff; /* Kolor t³a formularza */
+    border: 1px solid #007bff; /* Niebieska ramka */
+    border-radius: 8px; /* Zaokr¹glone rogi */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Cieñ wokó³ formularza */
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 0px;
+    background-color: #e9f7fd;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.custom-footer {
+    background-color: #e9f7fd !important; /* Jasny niebieski kolor t³a */
+    color: black; /* Kolor tekstu (szary) */
+    text-align: center; /* Wyœrodkowanie tekstu */
+    padding: 1rem 0; /* Padding w pionie */
+    margin-top: auto; /* Przesuniêcie na dó³ strony, jeœli reszta treœci nie wype³nia ekranu */
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+
+.form-floating > .form-control-plaintext::placeholder,
+.form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
+
+.form-floating > .form-control-plaintext:focus::placeholder,
+.form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+.navbar {
+    background-color: #007bff !important; /* Niebieski navbar */
+}
+
+    .navbar .navbar-brand {
+        color: #ffffff !important; /* Bia³y kolor tekstu w navbarze */
+    }
+
+    .navbar .nav-link {
+        color: #ffffff !important; /* Bia³y kolor linków w navbarze */
+    }
+
+        .navbar .nav-link:hover {
+            color: #cce7ff !important; /* Jaœniejszy niebieski kolor na hover */
+        }
+
+footer {
+    background-color: #007bff !important; /* Niebieskie t³o stopki */
+}
+
+    footer a {
+        color: #ffffff !important; /* Bia³e linki w stopce */
+    }
+
+        footer a:hover {
+            color: #cce7ff !important; /* Jaœniejszy niebieski kolor na hover w stopce */
+        }
+
+button.btn-link.nav-link {
+    color: white !important; /* Niebieski kolor przycisków */
+}
+
+button.btn-link.nav-link:hover {
+    color: #cce7ff !important;
+}
+
+.form-control {
+    border-color: #b3d7ff;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+.bg-light-blue {
+    background-color: #e9f7fd;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.btn-info {
+    border: 1px solid #007bff;
+    background-color: white;
+    border-color: #17a2b8;
+}
+
+.btn-info:hover {
+    background-color: grey;
+    border-color: #10707f;
+}
+
+.btn-danger {
+    color: black;
+    border: 1px solid #007bff;
+    background-color: white;
+    border-color: #17a2b8;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.btn-delete-comment {
+    color: blue;
+    background-color: #f1f9ff;
+}
+
+a.btn-info {
+    color: #007bff; /* Niebieski kolor linku */
+    text-decoration: none;
+}
+
+    a.btn-info:hover {
+        color: #0056b3; /* Ciemniejszy niebieski kolor linku na hover */
+    }
+
+.post {
+    border: 1px solid #007bff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #f1f9ff;
+}
+
+.post-details {
+    border: 1px solid #007bff; /* Niebieska ramka */
+    padding: 20px; /* Padding wewnêtrzny */
+    background-color: #f1f9ff; /* Jasnoniebieskie t³o */
+    border-radius: 10px; /* Zaokr¹glone rogi */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Cieñ wokó³ posta */
+    margin-bottom: 20px; /* Odstêp miêdzy postami */
+}
+
+/* Stylizacja komentarzy */
+.comment {
+    background-color: #f1f9ff; /* T³o komentarzy */
+    border: 1px solid #007bff; /* Niebieska ramka */
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px; /* Zaokr¹glone rogi */
+}
+
+    .comment strong {
+        color: #007bff; /* Niebieski kolor autora komentarza */
+    }

@@ -1,12 +1,13 @@
 ﻿@model MyApp.Models.Post
+@using System.Security.Claims;
 
 @{
     ViewData["Title"] = "Szczegóły posta";
 }
 
-<h2>@ViewData["Title"]</h2>
+<h2 class="text-center mb-4">@ViewData["Title"]</h2>
 
-<div>
+<div class="post-details">
     <h3>@Model.Tytul</h3>
     <p><strong>Autor:</strong> @(Model.AppUser?.UserName ?? "Nieznany")</p>
     <p>@Model.Tresc</p>
@@ -18,10 +19,19 @@
 {
     foreach (var komentarz in Model.Komentarze.OrderByDescending(k => k.DataDodania))
     {
-        <div style="margin-bottom: 10px;">
+        <div class="comment">
             <strong>@(komentarz.AppUser?.UserName ?? "Nieznany użytkownik")</strong> napisał:
             <p>@komentarz.Tresc</p>
             <small>@komentarz.DataDodania.ToString("g")</small>
+            @if (User.Identity.IsAuthenticated &&
+           (komentarz.AppUserId == User.FindFirst(ClaimTypes.NameIdentifier)?.Value
+           || Model.AppUserId == User.FindFirst(ClaimTypes.NameIdentifier)?.Value))
+            {
+                <form asp-action="UsunKomentarz" method="post" style="display:inline;">
+                    <input type="hidden" name="id" value="@komentarz.Id" />
+                    <button type="submit" class="btn btn-sm btn-delete-comment">Usuń</button>
+                </form>
+            }
         </div>
     }
 }
@@ -34,15 +44,16 @@ else
 {
     <form asp-action="DodajKomentarz" method="post">
         <input type="hidden" name="postId" value="@Model.Id" />
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="tresc">Dodaj komentarz:</label>
             <textarea class="form-control" id="tresc" name="tresc" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Dodaj komentarz</button>
+        <button type="submit" class="btn btn-primary mb-2">Dodaj komentarz</button>
     </form>
 }
 else
 {
     <p><em>Tylko zalogowani użytkownicy mogą dodawać komentarze.</em></p>
 }
-<a href="@Url.Action("Index", "Post")">Powrót do listy</a>
+
+<a href="@Url.Action("Index", "Post")" class="btn btn-info">Powrót do listy</a>

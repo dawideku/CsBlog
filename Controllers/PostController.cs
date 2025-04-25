@@ -75,9 +75,8 @@ namespace MyApp.Controllers
             if (post == null)
                 return NotFound();
 
-            // sprawdź, czy aktualny użytkownik to autor posta
             if (post.AppUserId != user?.Id)
-                return Forbid(); // zwraca 403 - brak dostępu
+                return Forbid();
 
             return View(post);
         }
@@ -100,7 +99,7 @@ namespace MyApp.Controllers
             {
                 try
                 {
-                    post.AppUserId = originalPost.AppUserId; // zachowaj autora
+                    post.AppUserId = originalPost.AppUserId;
                     post.DataDodania = originalPost.DataDodania;
                     _context.Update(post);
                     await _context.SaveChangesAsync();
@@ -152,6 +151,7 @@ namespace MyApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DodajKomentarz(int postId, string tresc)
@@ -180,10 +180,36 @@ namespace MyApp.Controllers
 
             _context.Komentarze.Add(komentarz);
             await _context.SaveChangesAsync();
-            Console.WriteLine($"Dodano komentarz od: {user.UserName}");
             return RedirectToAction("Szczegoly", new { id = postId });
         }
 
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UsunKomentarz(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) return Forbid();
+
+            var komentarz = await _context.Komentarze
+                .Include(k => k.Post)
+                .FirstOrDefaultAsync(k => k.Id == id);
+
+            if (komentarz == null) return NotFound();
+
+            bool jestAutoremKomentarza = komentarz.AppUserId == user.Id;
+            bool jestAutoremPosta = komentarz.Post.AppUserId == user.Id;
+
+            if (!jestAutoremKomentarza && !jestAutoremPosta)
+            {
+                return Forbid();
+            }
+
+            _context.Komentarze.Remove(komentarz);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Szczegoly", new { id = komentarz.PostId });
+        }
 
 
         public IActionResult Index()
